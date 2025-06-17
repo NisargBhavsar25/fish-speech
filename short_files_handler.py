@@ -2,7 +2,7 @@ import os
 import soundfile as sf
 import shutil
 
-audio_dir = 'data-raw-as'
+audio_dir = 'data-raw'
 min_length_seconds = 1.0  # Changed to 1 second
 short_audio_files = []
 
