@@ -5,7 +5,7 @@ set -e
 
 # python download_multilingual_dataset.py
 
-python short_files_handler.py
+# python short_files_handler.py
 
 fap loudness-norm data-raw data --clean
 
@@ -29,7 +29,7 @@ python tools/llama/build_dataset.py \
 
 # Third Python command
 python fish_speech/train.py --config-name text2semantic_finetune \
-    project=MULTI \
+    project=SEP-TOKEN \
     +lora@model.model.lora_config=r_8_alpha_16
 
 python tools/llama/merge_lora.py \
