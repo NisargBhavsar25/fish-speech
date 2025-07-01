@@ -27,8 +27,18 @@ download_dir = "./dataset_cache"
 os.makedirs(download_dir, exist_ok=True)
 
 # Define the languages we want to process
-languages = ["hindi", "marathi", "tamil", "telugu", "malayalam", "kannada"]
-target_hours_per_language = 100
+languages = ["Hindi", "Marathi", "Tamil", "Telugu", "Malayalam", "Kannada"]
+
+lang_code_map = {
+    "Hindi": "hi",
+    "Marathi": "mr",
+    "Tamil": "ta",
+    "Telugu": "te",
+    "Malayalam": "ml",
+    "Kannada": "kn"
+}
+
+target_hours_per_language = 200
 target_seconds_per_language = target_hours_per_language * 3600
 
 # Define the base directory for saving datasets
@@ -101,28 +111,28 @@ def create_directories():
         print(f"❌ Error creating directories: {str(e)}")
         return None
 
-def test_dataset_access():
-    """Test if we can access the IndicVoices dataset"""
-    try:
-        print("🔍 Testing dataset access...")
-        test_ds = load_dataset(
-            "ai4bharat/IndicVoices",
-            "hindi",
-            split="train[:1]",
-            token=HF_TOKEN,
-            cache_dir=download_dir
-        )
-        print(f"✅ Dataset access successful! Sample keys: {list(test_ds[0].keys())}")
-        return True
-    except Exception as e:
-        print(f"❌ Dataset access failed: {str(e)}")
-        return False
+# def test_dataset_access():
+#     """Test if we can access the IndicVoices dataset"""
+#     try:
+#         print("🔍 Testing dataset access...")
+#         test_ds = load_dataset(
+#             "ai4bharat/indicvoices_r",
+#             "hindi",
+#             split="train[:1]",
+#             token=HF_TOKEN,
+#             cache_dir=download_dir
+#         )
+#         print(f"✅ Dataset access successful! Sample keys: {list(test_ds[0].keys())}")
+#         return True
+#     except Exception as e:
+#         print(f"❌ Dataset access failed: {str(e)}")
+#         return False
 
 def save_speaker_based_dataset(languages, abs_base_dir, target_seconds_per_language):
     # Test dataset access first
-    if not test_dataset_access():
-        print("❌ Cannot access dataset. Please check your token and internet connection.")
-        return
+    # if not test_dataset_access():
+    #     print("❌ Cannot access dataset. Please check your token and internet connection.")
+    #     return
     
     # Clear initial test cache
     clear_cache()
@@ -151,7 +161,7 @@ def save_speaker_based_dataset(languages, abs_base_dir, target_seconds_per_langu
             # Load the dataset for this language
             print(f"📥 Loading dataset for {lang}...")
             ds = load_dataset(
-                "ai4bharat/IndicVoices",
+                "ai4bharat/indicvoices_r",
                 lang,
                 token=HF_TOKEN,
                 cache_dir=download_dir
@@ -260,6 +270,8 @@ def save_speaker_based_dataset(languages, abs_base_dir, target_seconds_per_langu
                                 
                                 # Save transcription to .lab file
                                 text = example.get("text", "").strip()
+                                lang_code = lang_code_map.get(lang, "unknown")
+                                text = f"<{lang_code}>" + text + f"</{lang_code}>"
                                 with open(lab_file, "w", encoding="utf-8") as f:
                                     f.write(text)
                                 

@@ -44,6 +44,21 @@ for i in range(4):
 SEMANTIC_TOKEN_TEMPLATE = "<|semantic:{i}|>"
 SEMANTIC_TOKENS = [SEMANTIC_TOKEN_TEMPLATE.format(i=i) for i in range(1024)]
 
+LANGUAGE_TOKENS = [
+    "<hi>",
+    "</hi>",
+    "<mr>",
+    "</mr>",
+    "<kn>",
+    "</kn>",
+    "<ml>",
+    "</ml>",
+    "<ta>",
+    "</ta>",
+    "<te>",
+    "</te>"
+]
+
 # Warning: when you add a new special token, you should only add it to the end of the list.
 ALL_SPECIAL_TOKENS = [
     BOS_TOKEN,
@@ -59,6 +74,7 @@ ALL_SPECIAL_TOKENS = [
     MODALITY_VOICE_TOKEN,
     MODALITY_INTERLEAVE_TOKEN,
     *SEMANTIC_TOKENS,
+    *LANGUAGE_TOKENS,
 ]
 
 
